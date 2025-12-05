@@ -16,6 +16,7 @@
   "private": true,
   "scripts": {
     "start": "bun run src/index.ts",
+    "tsc": "tsc --noEmit",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "lint": "eslint .",

@@ -1,20 +1,11 @@
-import { sql } from 'bun'
-import type { PersonalInfo } from '@/types'
+import * as db from '@/db/client'
+import * as sync from '@/services/sync'
 
-const PAT = process.env.OURA_PAT
-
-const getPersonalInfo = async (): Promise<PersonalInfo> => {
-  const response = await fetch('https://api.ouraring.com/v2/usercollection/personal_info', {
-    headers: {
-      Authorization: `Bearer ${PAT}`
-    }
-  })
-
-  return (await response.json()) as PersonalInfo
+try {
+  console.log('Initializing database...')
+  await db.initDb()
+  await sync.syncSleepData(process.env.OURA_PAT)
+} catch (error) {
+  console.error('Error during sync:', error)
+  process.exit(1)
 }
-
-const rows = await sql`SELECT version()`
-console.log(rows)
-
-const personalInfo = await getPersonalInfo()
-console.log(personalInfo)
