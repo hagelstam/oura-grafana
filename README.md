@@ -1,5 +1,5 @@
 # Oura Grafana
 
 ```bash
-npm start
+bun start
 ```
