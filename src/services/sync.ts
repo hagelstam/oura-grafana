@@ -3,7 +3,7 @@ import * as db from '@/db/client'
 
 const EARLIEST_DATE = '2025-06-01'
 
-const toISODate = (date: Date) => date.toISOString().split('T')[0]
+const toISODate = (date: Date) => date.toISOString().split('T')[0] ?? ''
 
 const addDays = (date: Date, days: number) => {
   const newDate = new Date(date)
@@ -16,6 +16,11 @@ export const syncSleepData = async (accessToken: string) => {
   const endDate = toISODate(new Date())
 
   const startDate = latestDate ? toISODate(addDays(new Date(latestDate), 1)) : EARLIEST_DATE
+
+  if (new Date(startDate) > new Date(endDate)) {
+    console.log('Already up to date')
+    return
+  }
 
   if (latestDate) {
     console.log(`Syncing from last recorded date: ${startDate}`)
