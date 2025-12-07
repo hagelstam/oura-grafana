@@ -23,7 +23,8 @@ const fetchSleep = async (
     headers: { Authorization: `Bearer ${accessToken}` }
   })
   if (!res.ok) {
-    throw new Error(`Oura API request failed: ${res.status} ${res.statusText}`)
+    const text = await res.text()
+    throw new Error(`Oura API request failed: ${res.status} ${text}`)
   }
 
   return res.json() as Promise<DailySleepResponse>
