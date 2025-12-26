@@ -1,42 +1,44 @@
 # Oura Grafana
 
-Automatically syncs Oura Ring sleep data to a PostgreSQL database for visualization in Grafana.
+Syncs Oura Ring sleep data to a PostgreSQL database for visualization in Grafana.
 
-## Getting started
+## Usage
 
-### Install dependencies
+### Prerequisites
 
-```bash
-bun install
-```
+- [Bun](https://bun.com/)
+- [Docker](https://www.docker.com/)
 
-### Configure environment variables
+### Setup
 
-Copy `.env.example` to `.env` and fill in your credentials:
+#### Configure environment variables
+
+Copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Required environment variables:
-
-- `OURA_PAT`: Your Oura API personal access token
-- `DATABASE_URL`: PostgreSQL connection string
-
-### Get Oura API token
+#### Get Oura API token
 
 1. Go to [Oura Cloud](https://cloud.ouraring.com/personal-access-tokens)
 2. Create a new personal access token
 3. Copy the token to your `.env` file
 
-### Setup Neon database
+#### Setup Neon database
 
 1. Create a new database on [Neon](https://neon.tech/)
 2. Copy the connection string to your `.env` file
 
-## Usage
-
 ### Run locally
+
+Install dependencies:
+
+```bash
+bun install
+```
+
+Run the sync script:
 
 ```bash
 bun start
@@ -49,4 +51,8 @@ Add secrets to your GitHub repository:
 - `OURA_PAT`
 - `DATABASE_URL`
 
-The workflow runs daily at 12 PM UTC.
+The workflow runs daily at 9 AM UTC.
+
+## License
+
+This project is licensed under the terms of the [MIT](https://choosealicense.com/licenses/mit/) license.
