@@ -1,6 +1,8 @@
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
     ports:
       - "3000:3000"
     env_file:
@@ -11,7 +13,8 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
-    restart: unless-stopped
+      - ./grafana/entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: /entrypoint.sh
 
 volumes:
   grafana-storage:
