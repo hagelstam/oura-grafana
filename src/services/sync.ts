@@ -29,7 +29,7 @@ export const syncSleepData = async (accessToken: string) => {
   }
 
   console.log(`Fetching sleep data from ${startDate} to ${endDate}...`)
-  const sleepData = await api.getAllDailySleep(accessToken, startDate, endDate)
+  const sleepData = await api.getAllSleep(accessToken, startDate, endDate)
 
   console.log(`Fetched ${sleepData.length} sleep records`)
 
@@ -38,6 +38,6 @@ export const syncSleepData = async (accessToken: string) => {
     return
   }
 
-  const upsertedCount = await db.upsertDailySleep(sleepData)
+  const upsertedCount = await db.upsertSleep(sleepData)
   console.log(`Successfully synced ${upsertedCount} sleep records`)
 }

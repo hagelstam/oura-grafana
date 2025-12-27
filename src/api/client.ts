@@ -1,4 +1,4 @@
-import type { DailySleepResponse } from '@/types'
+import type { SleepResponse } from '@/types'
 
 const BASE_URL = 'https://api.ouraring.com/v2'
 
@@ -10,7 +10,7 @@ const buildUrl = (startDate?: string, endDate?: string, nextToken?: string) => {
   if (nextToken) params.append('next_token', nextToken)
 
   const query = params.toString()
-  return `${BASE_URL}/usercollection/daily_sleep${query ? `?${query}` : ''}`
+  return `${BASE_URL}/usercollection/sleep${query ? `?${query}` : ''}`
 }
 
 const fetchSleep = async (
@@ -27,18 +27,18 @@ const fetchSleep = async (
     throw new Error(`Oura API request failed: ${res.status} ${text}`)
   }
 
-  return res.json() as Promise<DailySleepResponse>
+  return res.json() as Promise<SleepResponse>
 }
 
-export const getAllDailySleep = async (
+export const getAllSleep = async (
   accessToken: string,
   startDate?: string,
   endDate?: string
-): Promise<DailySleepResponse['data']> => {
+): Promise<SleepResponse['data']> => {
   const fetchPages = async (
     token: string | null = null,
-    acc: DailySleepResponse['data'] = []
-  ): Promise<DailySleepResponse['data']> => {
+    acc: SleepResponse['data'] = []
+  ): Promise<SleepResponse['data']> => {
     const res = await fetchSleep(accessToken, startDate, endDate, token ?? undefined)
     const data = [...acc, ...res.data]
     return res.next_token ? fetchPages(res.next_token, data) : data
