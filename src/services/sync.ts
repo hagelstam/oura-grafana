@@ -1,5 +1,6 @@
 import * as api from '@/api/client'
 import * as db from '@/db/client'
+import type { Sleep } from '@/types'
 
 const EARLIEST_DATE = '2025-06-01'
 
@@ -9,6 +10,22 @@ const addDays = (date: Date, days: number) => {
   const newDate = new Date(date)
   newDate.setDate(newDate.getDate() + days)
   return newDate
+}
+
+const toUTCISOString = (timestamp: string) => {
+  const date = new Date(timestamp)
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid timestamp: ${timestamp}`)
+  }
+  return date.toISOString()
+}
+
+const convertSleepToUTC = (sleep: Sleep) => {
+  return {
+    ...sleep,
+    bedtime_start: toUTCISOString(sleep.bedtime_start),
+    bedtime_end: toUTCISOString(sleep.bedtime_end)
+  }
 }
 
 export const syncSleepData = async (accessToken: string) => {
@@ -38,6 +55,8 @@ export const syncSleepData = async (accessToken: string) => {
     return
   }
 
-  const upsertedCount = await db.upsertSleep(sleepData)
+  const sleepDataUTC = sleepData.map(convertSleepToUTC)
+
+  const upsertedCount = await db.upsertSleep(sleepDataUTC)
   console.log(`Successfully synced ${upsertedCount} sleep records`)
 }

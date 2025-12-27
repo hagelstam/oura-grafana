@@ -79,7 +79,7 @@ export const getLatestSleepDate = async (): Promise<string | null> => {
 }
 
 const createTablesSQL = `
-DROP TABLE IF EXISTS daily_sleep;
+DROP TABLE IF EXISTS sleep;
 
 CREATE TABLE IF NOT EXISTS sleep (
   id TEXT PRIMARY KEY,
